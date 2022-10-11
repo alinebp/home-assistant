@@ -1,3 +1,204 @@
+decluttering_templates:
+  main_header:
+    card:
+      type: grid
+      square: false
+      columns: 2
+      cards:
+        - type: custom:mushroom-chips-card
+          chips:
+            - type: menu
+            - type: conditional
+              conditions:
+                - entity: group.porta_casa
+                  state: 'on'
+              chip:
+                type: template
+                content: >-
+                  {{ expand('group.porta_casa') | selectattr('state', 'eq',
+                  'on') | list | count }}
+                icon: mdi:door-open
+                icon_color: pink
+                entity: group.porta_casa
+                tap_action:
+                  action: more-info
+            - type: conditional
+              conditions:
+                - entity: group.janela_casa
+                  state: 'on'
+              chip:
+                type: template
+                content: >-
+                  {{ expand('group.janela_casa') | selectattr('state', 'eq',
+                  'on') | list | count }}
+                icon: mdi:window-open
+                icon_color: deep-purple
+                entity: group.janela_casa
+                tap_action:
+                  action: more-info
+            - type: conditional
+              conditions:
+                - entity: group.luz_casa
+                  state: 'on'
+              chip:
+                type: template
+                content: >-
+                  {{ expand('group.luz_casa') | selectattr('state', 'eq', 'on')
+                  | list | count }}
+                icon: mdi:lightbulb
+                icon_color: yellow
+                entity: group.luz_casa
+                tap_action:
+                  action: more-info
+                hold_action:
+                  action: toggle
+          alignment: start
+        - type: custom:mushroom-chips-card
+          chips:
+            - type: conditional
+              conditions:
+                - entity: binary_sensor.home_assistant_versions_update_available
+                  state_not: 'off'
+              chip:
+                type: entity
+                entity: binary_sensor.home_assistant_versions_update_available
+                name: HA
+                content_info: name
+                icon_color: pink
+            - type: conditional
+              conditions:
+                - entity: sensor.hacs
+                  state_not: '0'
+              chip:
+                type: entity
+                entity: sensor.hacs
+                icon: mdi:package-up
+                icon_color: pink
+                name: HACS
+                content_info: name
+            - type: conditional
+              conditions:
+                - entity: sensor.fire_tablet_battery_level
+                  state_not: unavailable
+              chip:
+                type: entity
+                entity: sensor.fire_tablet_battery_level
+            - type: conditional
+              conditions:
+                - entity: input_boolean.modo_ausente
+                  state: 'on'
+              chip:
+                type: entity
+                entity: input_boolean.modo_ausente
+                content_info: none
+            - type: action
+              icon: mdi:cog
+              tap_action:
+                action: navigate
+                navigation_path: /config/dashboard
+          alignment: end
+      view_layout:
+        position: main
+  secondary_header:
+    card:
+      type: grid
+      square: false
+      columns: 2
+      cards:
+        - type: custom:mushroom-chips-card
+          chips:
+            - type: back
+            - type: conditional
+              conditions:
+                - entity: group.porta_casa
+                  state: 'on'
+              chip:
+                type: template
+                content: >-
+                  {{ expand('group.porta_casa') | selectattr('state', 'eq',
+                  'on') | list | count }}
+                icon: mdi:door-open
+                icon_color: pink
+                entity: group.porta_casa
+                tap_action:
+                  action: more-info
+            - type: conditional
+              conditions:
+                - entity: group.janela_casa
+                  state: 'on'
+              chip:
+                type: template
+                content: >-
+                  {{ expand('group.janela_casa') | selectattr('state', 'eq',
+                  'on') | list | count }}
+                icon: mdi:window-open
+                icon_color: deep-purple
+                entity: group.janela_casa
+                tap_action:
+                  action: more-info
+            - type: conditional
+              conditions:
+                - entity: group.luz_casa
+                  state: 'on'
+              chip:
+                type: template
+                content: >-
+                  {{ expand('group.luz_casa') | selectattr('state', 'eq', 'on')
+                  | list | count }}
+                icon: mdi:lightbulb
+                icon_color: yellow
+                entity: group.luz_casa
+                tap_action:
+                  action: more-info
+                hold_action:
+                  action: toggle
+          alignment: start
+        - type: custom:mushroom-chips-card
+          chips:
+            - type: conditional
+              conditions:
+                - entity: binary_sensor.home_assistant_versions_update_available
+                  state_not: 'off'
+              chip:
+                type: entity
+                entity: binary_sensor.home_assistant_versions_update_available
+                name: HA
+                content_info: name
+                icon_color: pink
+            - type: conditional
+              conditions:
+                - entity: sensor.hacs
+                  state_not: '0'
+              chip:
+                type: entity
+                entity: sensor.hacs
+                icon: mdi:package-up
+                icon_color: pink
+                name: HACS
+                content_info: name
+            - type: conditional
+              conditions:
+                - entity: sensor.fire_tablet_battery_level
+                  state_not: unavailable
+              chip:
+                type: entity
+                entity: sensor.fire_tablet_battery_level
+            - type: conditional
+              conditions:
+                - entity: input_boolean.modo_ausente
+                  state: 'on'
+              chip:
+                type: entity
+                entity: input_boolean.modo_ausente
+                content_info: none
+            - type: action
+              icon: mdi:cog
+              tap_action:
+                action: navigate
+                navigation_path: /config/dashboard
+          alignment: end
+      view_layout:
+        position: main
 kiosk_mode:
   hide_header: true
 views:
@@ -7,94 +208,8 @@ views:
     type: custom:vertical-layout
     badges: []
     cards:
-      - type: vertical-stack
-        cards:
-          - square: false
-            columns: 2
-            type: grid
-            cards:
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: menu
-                  - type: conditional
-                    conditions:
-                      - entity: group.porta_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.porta_casa') | selectattr('state',
-                        'eq', 'on') | list | count }}
-                      icon: mdi:door-open
-                      icon_color: pink
-                      entity: group.porta_casa
-                      tap_action:
-                        action: more-info
-                  - type: conditional
-                    conditions:
-                      - entity: group.janela_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.janela_casa') | selectattr('state',
-                        'eq', 'on') | list | count }}
-                      icon: mdi:window-open
-                      icon_color: deep-purple
-                      entity: group.janela_casa
-                      tap_action:
-                        action: more-info
-                  - type: conditional
-                    conditions:
-                      - entity: group.luz_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.luz_casa') | selectattr('state', 'eq',
-                        'on') | list | count }}
-                      icon: mdi:lightbulb
-                      icon_color: yellow
-                      entity: group.luz_casa
-                      tap_action:
-                        action: more-info
-                      hold_action:
-                        action: toggle
-                alignment: start
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: conditional
-                    conditions:
-                      - entity: binary_sensor.home_assistant_versions_update_available
-                        state_not: 'off'
-                    chip:
-                      type: entity
-                      entity: binary_sensor.home_assistant_versions_update_available
-                      name: HA
-                      content_info: name
-                      icon_color: pink
-                  - type: conditional
-                    conditions:
-                      - entity: sensor.hacs
-                        state_not: '0'
-                    chip:
-                      type: entity
-                      entity: sensor.hacs
-                      icon: mdi:package-up
-                      icon_color: pink
-                      name: HACS
-                      content_info: name
-                  - type: entity
-                    entity: sensor.fire_tablet_battery_level
-                    use_entity_picture: false
-                  - type: action
-                    icon: mdi:cog
-                    tap_action:
-                      action: navigate
-                      navigation_path: /config/dashboard
-                alignment: end
-        view_layout:
-          position: main
+      - type: custom:decluttering-card
+        template: main_header
       - type: custom:mushroom-title-card
         title: >-
           {% if now().strftime("%H")|int < 12 %}Bom dia, {% elif
@@ -141,12 +256,8 @@ views:
           - type: custom:simple-weather-card
             entity: weather.casinha
             name: ' '
-            custom:
-              - temp: sensor.home_temp
-              - high: sensor.home_high_temp
-              - low: sensor.home_low_temp
           - type: weather-forecast
-            entity: weather.home
+            entity: weather.casinha
             show_current: false
             show_forecast: true
           - type: custom:gap-card
@@ -287,7 +398,7 @@ views:
                         entity: cover.persiana_curtain
                         content_info: none
                         name: Persiana
-                        icon_color: deep-purple
+                        icon_color: indigo
                       - type: entity
                         entity: switch.ventilador_quarto_socket_1
                         icon_color: blue
@@ -381,100 +492,23 @@ views:
     type: custom:vertical-layout
     badges: []
     cards:
-      - type: vertical-stack
-        cards:
-          - square: false
-            columns: 2
-            type: grid
-            cards:
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: back
-                  - type: conditional
-                    conditions:
-                      - entity: group.porta_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.porta_casa') | selectattr('state',
-                        'eq', 'on') | list | count }}
-                      icon: mdi:door-open
-                      icon_color: pink
-                      entity: group.porta_casa
-                      tap_action:
-                        action: more-info
-                  - type: conditional
-                    conditions:
-                      - entity: group.janela_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.janela_casa') | selectattr('state',
-                        'eq', 'on') | list | count }}
-                      icon: mdi:window-open
-                      icon_color: deep-purple
-                      entity: group.janela_casa
-                      tap_action:
-                        action: more-info
-                  - type: conditional
-                    conditions:
-                      - entity: group.luz_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.luz_casa') | selectattr('state', 'eq',
-                        'on') | list | count }}
-                      icon: mdi:lightbulb
-                      icon_color: yellow
-                      entity: group.luz_casa
-                      tap_action:
-                        action: more-info
-                      hold_action:
-                        action: toggle
-                alignment: start
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: conditional
-                    conditions:
-                      - entity: binary_sensor.home_assistant_versions_update_available
-                        state_not: 'off'
-                    chip:
-                      type: entity
-                      entity: binary_sensor.home_assistant_versions_update_available
-                      name: HA
-                      content_info: name
-                      icon_color: pink
-                  - type: conditional
-                    conditions:
-                      - entity: sensor.hacs
-                        state_not: '0'
-                    chip:
-                      type: entity
-                      entity: sensor.hacs
-                      icon: mdi:package-up
-                      icon_color: pink
-                      name: HACS
-                      content_info: name
-                  - type: entity
-                    entity: sensor.fire_tablet_battery_level
-                    use_entity_picture: false
-                  - type: action
-                    icon: mdi:cog
-                    tap_action:
-                      action: navigate
-                      navigation_path: /config/dashboard
-                alignment: end
-          - type: custom:gap-card
-            height: 10
-        view_layout:
-          position: main
+      - type: custom:decluttering-card
+        template: secondary_header
       - type: vertical-stack
         cards:
           - type: custom:mushroom-title-card
             title: Resumo da Casa
+            subtitle: Spotify
+          - type: custom:mini-media-player
+            entity: media_player.spotify_aline_pelliciotti
+            name: ' '
+            source: full
+            toggle_power: true
+            artwork: material
+      - type: vertical-stack
+        cards:
+          - type: custom:mushroom-title-card
+            title: ''
             subtitle: Modos
           - type: horizontal-stack
             cards:
@@ -521,7 +555,7 @@ views:
                 state_color: false
                 entities:
                   - entity: switch.luzinha_socket_1
-                    name: Pisca
+                    name: Luzinha
                     toggle: true
               - entity: light.led_rack
                 type: custom:multiple-entity-row
@@ -536,7 +570,6 @@ views:
               - entity: switch.adega_socket_1
                 type: custom:multiple-entity-row
                 name: Adega
-                state_header: Status
                 toggle: true
                 state_color: false
                 entities:
@@ -553,12 +586,6 @@ views:
               - type: divider
               - card:
                   entity: switch.mini_pc_socket_1
-                type: custom:restriction-card
-                restrictions:
-                  confirm: true
-                row: true
-              - card:
-                  entity: switch.raspberry_pi_socket_1
                 type: custom:restriction-card
                 restrictions:
                   confirm: true
@@ -654,6 +681,7 @@ views:
                   - entity: binary_sensor.area_janela_e
                     name: Esquerda
               - entity: binary_sensor.area_movimento
+                name: Movimento
             state_color: false
             show_header_toggle: false
       - type: vertical-stack
@@ -697,7 +725,7 @@ views:
                 entities:
                   - entity: sensor.quarto_clima_temperature
                     name: Temp
-              - entity: binary_sensor.banheiro_porta
+              - entity: binary_sensor.quarto_porta
                 name: Porta
               - entity: binary_sensor.quarto_janela
                 name: Janela
@@ -745,100 +773,12 @@ views:
     type: custom:vertical-layout
     badges: []
     cards:
-      - type: vertical-stack
-        cards:
-          - square: false
-            columns: 2
-            type: grid
-            cards:
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: back
-                  - type: conditional
-                    conditions:
-                      - entity: group.porta_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.porta_casa') | selectattr('state',
-                        'eq', 'on') | list | count }}
-                      icon: mdi:door-open
-                      icon_color: pink
-                      entity: group.porta_casa
-                      tap_action:
-                        action: more-info
-                  - type: conditional
-                    conditions:
-                      - entity: group.janela_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.janela_casa') | selectattr('state',
-                        'eq', 'on') | list | count }}
-                      icon: mdi:window-open
-                      icon_color: deep-purple
-                      entity: group.janela_casa
-                      tap_action:
-                        action: more-info
-                  - type: conditional
-                    conditions:
-                      - entity: group.luz_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.luz_casa') | selectattr('state', 'eq',
-                        'on') | list | count }}
-                      icon: mdi:lightbulb
-                      icon_color: yellow
-                      entity: group.luz_casa
-                      tap_action:
-                        action: more-info
-                      hold_action:
-                        action: toggle
-                alignment: start
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: conditional
-                    conditions:
-                      - entity: binary_sensor.home_assistant_versions_update_available
-                        state_not: 'off'
-                    chip:
-                      type: entity
-                      entity: binary_sensor.home_assistant_versions_update_available
-                      name: HA
-                      content_info: name
-                      icon_color: pink
-                  - type: conditional
-                    conditions:
-                      - entity: sensor.hacs
-                        state_not: '0'
-                    chip:
-                      type: entity
-                      entity: sensor.hacs
-                      icon: mdi:package-up
-                      icon_color: pink
-                      name: HACS
-                      content_info: name
-                  - type: entity
-                    entity: sensor.fire_tablet_battery_level
-                    use_entity_picture: false
-                  - type: action
-                    icon: mdi:cog
-                    tap_action:
-                      action: navigate
-                      navigation_path: /config/dashboard
-                alignment: end
-          - type: custom:gap-card
-            height: 10
-        view_layout:
-          position: main
+      - type: custom:decluttering-card
+        template: secondary_header
       - type: custom:mushroom-title-card
         title: |
           Programação
-        subtitle: 'NFL: Próximo Jogo'
+        subtitle: 'NFL: Seattle Seahawks'
       - type: custom:nfl-card
         entity: sensor.nfl
       - type: custom:mushroom-title-card
@@ -848,7 +788,7 @@ views:
         mode: vertical
         cards:
           - type: custom:upcoming-media-card
-            entity: sensor.trakt_upcoming_calendar
+            entity: sensor.trakt_upcoming_shows
             image_style: banner
   - theme: macOS Theme
     title: Controles
@@ -857,96 +797,8 @@ views:
     type: custom:vertical-layout
     badges: []
     cards:
-      - type: vertical-stack
-        cards:
-          - square: false
-            columns: 2
-            type: grid
-            cards:
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: back
-                  - type: conditional
-                    conditions:
-                      - entity: group.porta_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.porta_casa') | selectattr('state',
-                        'eq', 'on') | list | count }}
-                      icon: mdi:door-open
-                      icon_color: pink
-                      entity: group.porta_casa
-                      tap_action:
-                        action: more-info
-                  - type: conditional
-                    conditions:
-                      - entity: group.janela_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.janela_casa') | selectattr('state',
-                        'eq', 'on') | list | count }}
-                      icon: mdi:window-open
-                      icon_color: deep-purple
-                      entity: group.janela_casa
-                      tap_action:
-                        action: more-info
-                  - type: conditional
-                    conditions:
-                      - entity: group.luz_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.luz_casa') | selectattr('state', 'eq',
-                        'on') | list | count }}
-                      icon: mdi:lightbulb
-                      icon_color: yellow
-                      entity: group.luz_casa
-                      tap_action:
-                        action: more-info
-                      hold_action:
-                        action: toggle
-                alignment: start
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: conditional
-                    conditions:
-                      - entity: binary_sensor.home_assistant_versions_update_available
-                        state_not: 'off'
-                    chip:
-                      type: entity
-                      entity: binary_sensor.home_assistant_versions_update_available
-                      name: HA
-                      content_info: name
-                      icon_color: pink
-                  - type: conditional
-                    conditions:
-                      - entity: sensor.hacs
-                        state_not: '0'
-                    chip:
-                      type: entity
-                      entity: sensor.hacs
-                      icon: mdi:package-up
-                      icon_color: pink
-                      name: HACS
-                      content_info: name
-                  - type: entity
-                    entity: sensor.fire_tablet_battery_level
-                    use_entity_picture: false
-                  - type: action
-                    icon: mdi:cog
-                    tap_action:
-                      action: navigate
-                      navigation_path: /config/dashboard
-                alignment: end
-          - type: custom:gap-card
-            height: 10
-        view_layout:
-          position: main
+      - type: custom:decluttering-card
+        template: secondary_header
       - type: custom:swipe-card
         cards:
           - type: vertical-stack
@@ -1218,96 +1070,8 @@ views:
     type: custom:vertical-layout
     badges: []
     cards:
-      - type: vertical-stack
-        cards:
-          - square: false
-            columns: 2
-            type: grid
-            cards:
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: back
-                  - type: conditional
-                    conditions:
-                      - entity: group.porta_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.porta_casa') | selectattr('state',
-                        'eq', 'on') | list | count }}
-                      icon: mdi:door-open
-                      icon_color: pink
-                      entity: group.porta_casa
-                      tap_action:
-                        action: more-info
-                  - type: conditional
-                    conditions:
-                      - entity: group.janela_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.janela_casa') | selectattr('state',
-                        'eq', 'on') | list | count }}
-                      icon: mdi:window-open
-                      icon_color: deep-purple
-                      entity: group.janela_casa
-                      tap_action:
-                        action: more-info
-                  - type: conditional
-                    conditions:
-                      - entity: group.luz_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.luz_casa') | selectattr('state', 'eq',
-                        'on') | list | count }}
-                      icon: mdi:lightbulb
-                      icon_color: yellow
-                      entity: group.luz_casa
-                      tap_action:
-                        action: more-info
-                      hold_action:
-                        action: toggle
-                alignment: start
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: conditional
-                    conditions:
-                      - entity: binary_sensor.home_assistant_versions_update_available
-                        state_not: 'off'
-                    chip:
-                      type: entity
-                      entity: binary_sensor.home_assistant_versions_update_available
-                      name: HA
-                      content_info: name
-                      icon_color: pink
-                  - type: conditional
-                    conditions:
-                      - entity: sensor.hacs
-                        state_not: '0'
-                    chip:
-                      type: entity
-                      entity: sensor.hacs
-                      icon: mdi:package-up
-                      icon_color: pink
-                      name: HACS
-                      content_info: name
-                  - type: entity
-                    entity: sensor.fire_tablet_battery_level
-                    use_entity_picture: false
-                  - type: action
-                    icon: mdi:cog
-                    tap_action:
-                      action: navigate
-                      navigation_path: /config/dashboard
-                alignment: end
-          - type: custom:gap-card
-            height: 10
-        view_layout:
-          position: main
+      - type: custom:decluttering-card
+        template: secondary_header
       - type: vertical-stack
         cards:
           - type: custom:mushroom-title-card
@@ -1340,96 +1104,8 @@ views:
     type: custom:vertical-layout
     badges: []
     cards:
-      - type: vertical-stack
-        cards:
-          - square: false
-            columns: 2
-            type: grid
-            cards:
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: back
-                  - type: conditional
-                    conditions:
-                      - entity: group.porta_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.porta_casa') | selectattr('state',
-                        'eq', 'on') | list | count }}
-                      icon: mdi:door-open
-                      icon_color: pink
-                      entity: group.porta_casa
-                      tap_action:
-                        action: more-info
-                  - type: conditional
-                    conditions:
-                      - entity: group.janela_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.janela_casa') | selectattr('state',
-                        'eq', 'on') | list | count }}
-                      icon: mdi:window-open
-                      icon_color: deep-purple
-                      entity: group.janela_casa
-                      tap_action:
-                        action: more-info
-                  - type: conditional
-                    conditions:
-                      - entity: group.luz_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.luz_casa') | selectattr('state', 'eq',
-                        'on') | list | count }}
-                      icon: mdi:lightbulb
-                      icon_color: yellow
-                      entity: group.luz_casa
-                      tap_action:
-                        action: more-info
-                      hold_action:
-                        action: toggle
-                alignment: start
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: conditional
-                    conditions:
-                      - entity: binary_sensor.home_assistant_versions_update_available
-                        state_not: 'off'
-                    chip:
-                      type: entity
-                      entity: binary_sensor.home_assistant_versions_update_available
-                      name: HA
-                      content_info: name
-                      icon_color: pink
-                  - type: conditional
-                    conditions:
-                      - entity: sensor.hacs
-                        state_not: '0'
-                    chip:
-                      type: entity
-                      entity: sensor.hacs
-                      icon: mdi:package-up
-                      icon_color: pink
-                      name: HACS
-                      content_info: name
-                  - type: entity
-                    entity: sensor.fire_tablet_battery_level
-                    use_entity_picture: false
-                  - type: action
-                    icon: mdi:cog
-                    tap_action:
-                      action: navigate
-                      navigation_path: /config/dashboard
-                alignment: end
-          - type: custom:gap-card
-            height: 10
-        view_layout:
-          position: main
+      - type: custom:decluttering-card
+        template: secondary_header
       - type: vertical-stack
         cards:
           - type: custom:mushroom-title-card
@@ -1441,7 +1117,6 @@ views:
               - entity: automation.ha_restart_diario
               - entity: automation.luzinha_acender_diariamente
               - entity: automation.luzinha_apagar_diariamente
-              - entity: automation.nova_automacao
         view_layout:
           position: main
       - type: vertical-stack
@@ -1470,105 +1145,8 @@ views:
     type: custom:vertical-layout
     badges: []
     cards:
-      - type: vertical-stack
-        cards:
-          - square: false
-            columns: 2
-            type: grid
-            cards:
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: back
-                  - type: conditional
-                    conditions:
-                      - entity: group.porta_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.porta_casa') | selectattr('state',
-                        'eq', 'on') | list | count }}
-                      icon: mdi:door-open
-                      icon_color: pink
-                      entity: group.porta_casa
-                      tap_action:
-                        action: more-info
-                  - type: conditional
-                    conditions:
-                      - entity: group.janela_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.janela_casa') | selectattr('state',
-                        'eq', 'on') | list | count }}
-                      icon: mdi:window-open
-                      icon_color: deep-purple
-                      entity: group.janela_casa
-                      tap_action:
-                        action: more-info
-                  - type: conditional
-                    conditions:
-                      - entity: group.luz_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.luz_casa') | selectattr('state', 'eq',
-                        'on') | list | count }}
-                      icon: mdi:lightbulb
-                      icon_color: yellow
-                      entity: group.luz_casa
-                      tap_action:
-                        action: more-info
-                      hold_action:
-                        action: toggle
-                alignment: start
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: conditional
-                    conditions:
-                      - entity: binary_sensor.home_assistant_versions_update_available
-                        state_not: 'off'
-                    chip:
-                      type: entity
-                      entity: binary_sensor.home_assistant_versions_update_available
-                      name: HA
-                      content_info: name
-                      icon_color: pink
-                  - type: conditional
-                    conditions:
-                      - entity: sensor.hacs
-                        state_not: '0'
-                    chip:
-                      type: entity
-                      entity: sensor.hacs
-                      icon: mdi:package-up
-                      icon_color: pink
-                      name: HACS
-                      content_info: name
-                  - type: entity
-                    entity: sensor.fire_tablet_battery_level
-                    use_entity_picture: false
-                  - type: template
-                    double_tap_action:
-                      action: none
-                    icon: mdi:pencil
-                    tap_action:
-                      action: navigate
-                      navigation_path: /lovelace/Principal?disable_km
-                    hold_action:
-                      action: none
-                  - type: action
-                    icon: mdi:cog
-                    tap_action:
-                      action: navigate
-                      navigation_path: /config/dashboard
-                alignment: end
-          - type: custom:gap-card
-            height: 10
-        view_layout:
-          position: main
+      - type: custom:decluttering-card
+        template: secondary_header
       - type: vertical-stack
         cards:
           - type: custom:mushroom-title-card
@@ -1623,7 +1201,7 @@ views:
                   - type: custom:gap-card
                     height: 8
                   - type: custom:mushroom-entity-card
-                    entity: switch.raspberry_pi_socket_1
+                    entity: switch.mini_pc_socket_1
                     tap_action:
                       action: more-info
                     hold_action:
@@ -1636,15 +1214,13 @@ views:
                   - type: custom:mushroom-chips-card
                     chips:
                       - type: entity
-                        entity: sensor.processor_use
+                        entity: sensor.glances_cpu_used
                       - type: entity
-                        entity: sensor.memory_use_percent
+                        entity: sensor.glances_ram_used
                       - type: entity
-                        entity: sensor.disk_use_percent_home
+                        entity: sensor.glances_data_used_percent
                       - type: entity
-                        entity: sensor.processor_temperature
-                      - type: entity
-                        entity: sensor.argon_one_addon_fan_speed
+                        entity: sensor.glances_core_0_temperature
                     alignment: center
           - type: custom:stack-in-card
             mode: horizontal
@@ -1704,15 +1280,63 @@ views:
                       - type: entity
                         entity: sensor.fire_tablet_battery_level
                     alignment: center
+      - type: vertical-stack
+        cards:
+          - type: custom:mushroom-title-card
+            title: ''
+            subtitle: Rede
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                secondary_info: state
+                icon: mdi:wan
+                entity: sensor.myip
+                name: IP Externo
+                icon_color: orange
+              - type: custom:mushroom-template-card
+                primary: IP Interno
+                secondary: '{{ states[''device_tracker.mini_pc''].attributes.ip }}'
+                icon: mdi:network
+                entity: device_tracker.mini_pc
+                icon_color: orange
+                double_tap_action:
+                  action: none
+                tap_action:
+                  action: more-info
           - type: custom:mushroom-entity-card
             entity: device_tracker.gateway_zigbee_ble
             secondary_info: last-changed
-            icon: mdi:router-wireless
+            icon: mdi:zigbee
+            icon_color: orange
       - type: vertical-stack
         cards:
           - type: custom:mushroom-title-card
             title: ''
             subtitle: Manutenção
+          - type: horizontal-stack
+            cards:
+              - type: custom:restriction-card
+                restrictions:
+                  confirm: true
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Reiniciar
+                  secondary: Reinicia o Home Assistant
+                  icon: mdi:restart
+                  tap_action:
+                    action: call-service
+                    service: homeassistant.restart
+                    data: {}
+                    target: {}
+                  icon_color: pink
+              - type: custom:mushroom-template-card
+                primary: Editar Dashboard
+                secondary: Habilita a barra de menu
+                icon: mdi:pencil
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace/painel?disable_km
+                icon_color: pink
           - type: horizontal-stack
             cards:
               - type: custom:restriction-card
@@ -1814,96 +1438,8 @@ views:
     type: custom:vertical-layout
     badges: []
     cards:
-      - type: vertical-stack
-        cards:
-          - square: false
-            columns: 2
-            type: grid
-            cards:
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: back
-                  - type: conditional
-                    conditions:
-                      - entity: group.porta_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.porta_casa') | selectattr('state',
-                        'eq', 'on') | list | count }}
-                      icon: mdi:door-open
-                      icon_color: pink
-                      entity: group.porta_casa
-                      tap_action:
-                        action: more-info
-                  - type: conditional
-                    conditions:
-                      - entity: group.janela_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.janela_casa') | selectattr('state',
-                        'eq', 'on') | list | count }}
-                      icon: mdi:window-open
-                      icon_color: deep-purple
-                      entity: group.janela_casa
-                      tap_action:
-                        action: more-info
-                  - type: conditional
-                    conditions:
-                      - entity: group.luz_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.luz_casa') | selectattr('state', 'eq',
-                        'on') | list | count }}
-                      icon: mdi:lightbulb
-                      icon_color: yellow
-                      entity: group.luz_casa
-                      tap_action:
-                        action: more-info
-                      hold_action:
-                        action: toggle
-                alignment: start
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: conditional
-                    conditions:
-                      - entity: binary_sensor.home_assistant_versions_update_available
-                        state_not: 'off'
-                    chip:
-                      type: entity
-                      entity: binary_sensor.home_assistant_versions_update_available
-                      name: HA
-                      content_info: name
-                      icon_color: pink
-                  - type: conditional
-                    conditions:
-                      - entity: sensor.hacs
-                        state_not: '0'
-                    chip:
-                      type: entity
-                      entity: sensor.hacs
-                      icon: mdi:package-up
-                      icon_color: pink
-                      name: HACS
-                      content_info: name
-                  - type: entity
-                    entity: sensor.fire_tablet_battery_level
-                    use_entity_picture: false
-                  - type: action
-                    icon: mdi:cog
-                    tap_action:
-                      action: navigate
-                      navigation_path: /config/dashboard
-                alignment: end
-          - type: custom:gap-card
-            height: 10
-        view_layout:
-          position: main
+      - type: custom:decluttering-card
+        template: secondary_header
       - type: vertical-stack
         cards:
           - type: custom:mushroom-title-card
@@ -1936,10 +1472,12 @@ views:
                 entity: binary_sensor.fechadura_status
                 icon_color: deep-purple
                 secondary_info: last-changed
+                name: Fechadura
               - type: custom:mushroom-entity-card
                 entity: binary_sensor.sala_porta
                 icon_color: deep-purple
                 secondary_info: last-changed
+                name: Porta
           - type: horizontal-stack
             cards:
               - type: custom:mushroom-entity-card
@@ -2075,37 +1613,19 @@ views:
           - type: custom:mushroom-title-card
             title: ''
             subtitle: Mídias
-          - type: custom:mushroom-media-player-card
+          - type: custom:mini-media-player
             entity: media_player.sala_tv
-            volume_controls:
-              - volume_set
-              - volume_mute
-            media_controls: []
-            show_volume_level: true
-            use_media_info: true
-            name: TV
-            icon: mdi:television
-          - type: custom:mushroom-media-player-card
+            group: false
+            volume_stateless: false
+            toggle_power: true
+            source: full
+          - type: custom:mini-media-player
             entity: media_player.fire_tv_sala
-            volume_controls:
-              - volume_set
-              - volume_mute
-            media_controls: []
-            show_volume_level: true
-            use_media_info: true
+            group: false
             icon: mdi:usb-flash-drive
-            name: Fire Stick
-          - type: custom:mushroom-media-player-card
+          - type: custom:mini-media-player
             entity: media_player.echo_sala
-            volume_controls:
-              - volume_set
-              - volume_mute
-            media_controls: []
-            collapsible_controls: false
-            show_volume_level: true
-            use_media_info: true
-            name: Echo
-            icon: mdi:speaker
+            icon: phu:echo-dot-gen-4
           - type: custom:gap-card
             height: 20
   - theme: macOS Theme
@@ -2114,96 +1634,8 @@ views:
     type: custom:vertical-layout
     badges: []
     cards:
-      - type: vertical-stack
-        cards:
-          - square: false
-            columns: 2
-            type: grid
-            cards:
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: back
-                  - type: conditional
-                    conditions:
-                      - entity: group.porta_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.porta_casa') | selectattr('state',
-                        'eq', 'on') | list | count }}
-                      icon: mdi:door-open
-                      icon_color: pink
-                      entity: group.porta_casa
-                      tap_action:
-                        action: more-info
-                  - type: conditional
-                    conditions:
-                      - entity: group.janela_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.janela_casa') | selectattr('state',
-                        'eq', 'on') | list | count }}
-                      icon: mdi:window-open
-                      icon_color: deep-purple
-                      entity: group.janela_casa
-                      tap_action:
-                        action: more-info
-                  - type: conditional
-                    conditions:
-                      - entity: group.luz_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.luz_casa') | selectattr('state', 'eq',
-                        'on') | list | count }}
-                      icon: mdi:lightbulb
-                      icon_color: yellow
-                      entity: group.luz_casa
-                      tap_action:
-                        action: more-info
-                      hold_action:
-                        action: toggle
-                alignment: start
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: conditional
-                    conditions:
-                      - entity: binary_sensor.home_assistant_versions_update_available
-                        state_not: 'off'
-                    chip:
-                      type: entity
-                      entity: binary_sensor.home_assistant_versions_update_available
-                      name: HA
-                      content_info: name
-                      icon_color: pink
-                  - type: conditional
-                    conditions:
-                      - entity: sensor.hacs
-                        state_not: '0'
-                    chip:
-                      type: entity
-                      entity: sensor.hacs
-                      icon: mdi:package-up
-                      icon_color: pink
-                      name: HACS
-                      content_info: name
-                  - type: entity
-                    entity: sensor.fire_tablet_battery_level
-                    use_entity_picture: false
-                  - type: action
-                    icon: mdi:cog
-                    tap_action:
-                      action: navigate
-                      navigation_path: /config/dashboard
-                alignment: end
-          - type: custom:gap-card
-            height: 10
-        view_layout:
-          position: main
+      - type: custom:decluttering-card
+        template: secondary_header
       - type: vertical-stack
         cards:
           - type: custom:mushroom-title-card
@@ -2397,28 +1829,16 @@ views:
                           type: entity
                           entity: sensor.lava_seca_remaining_time
                     alignment: center
-          - type: custom:datetime-card
-            title: ''
-            image: ''
-            entity:
-              - id: sensor.lava_seca_tub_clean_counter
-                max: 30
       - type: vertical-stack
         cards:
           - type: custom:mushroom-title-card
             title: ''
             subtitle: Mídias
-          - type: custom:mushroom-media-player-card
+          - type: custom:mini-media-player
             entity: media_player.echo_cozinha
-            volume_controls:
-              - volume_set
-            media_controls: []
-            collapsible_controls: false
-            show_volume_level: true
-            use_media_artwork: false
-            use_media_info: true
+            icon: phu:echo-show-8-gen-2
             name: Echo
-            icon: mdi:speaker
+            group: false
           - type: custom:gap-card
             height: 20
   - theme: macOS Theme
@@ -2427,96 +1847,8 @@ views:
     type: custom:vertical-layout
     badges: []
     cards:
-      - type: vertical-stack
-        cards:
-          - square: false
-            columns: 2
-            type: grid
-            cards:
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: back
-                  - type: conditional
-                    conditions:
-                      - entity: group.porta_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.porta_casa') | selectattr('state',
-                        'eq', 'on') | list | count }}
-                      icon: mdi:door-open
-                      icon_color: pink
-                      entity: group.porta_casa
-                      tap_action:
-                        action: more-info
-                  - type: conditional
-                    conditions:
-                      - entity: group.janela_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.janela_casa') | selectattr('state',
-                        'eq', 'on') | list | count }}
-                      icon: mdi:window-open
-                      icon_color: deep-purple
-                      entity: group.janela_casa
-                      tap_action:
-                        action: more-info
-                  - type: conditional
-                    conditions:
-                      - entity: group.luz_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.luz_casa') | selectattr('state', 'eq',
-                        'on') | list | count }}
-                      icon: mdi:lightbulb
-                      icon_color: yellow
-                      entity: group.luz_casa
-                      tap_action:
-                        action: more-info
-                      hold_action:
-                        action: toggle
-                alignment: start
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: conditional
-                    conditions:
-                      - entity: binary_sensor.home_assistant_versions_update_available
-                        state_not: 'off'
-                    chip:
-                      type: entity
-                      entity: binary_sensor.home_assistant_versions_update_available
-                      name: HA
-                      content_info: name
-                      icon_color: pink
-                  - type: conditional
-                    conditions:
-                      - entity: sensor.hacs
-                        state_not: '0'
-                    chip:
-                      type: entity
-                      entity: sensor.hacs
-                      icon: mdi:package-up
-                      icon_color: pink
-                      name: HACS
-                      content_info: name
-                  - type: entity
-                    entity: sensor.fire_tablet_battery_level
-                    use_entity_picture: false
-                  - type: action
-                    icon: mdi:cog
-                    tap_action:
-                      action: navigate
-                      navigation_path: /config/dashboard
-                alignment: end
-          - type: custom:gap-card
-            height: 10
-        view_layout:
-          position: main
+      - type: custom:decluttering-card
+        template: secondary_header
       - type: vertical-stack
         cards:
           - type: custom:mushroom-title-card
@@ -2621,35 +1953,21 @@ views:
           - type: custom:mushroom-title-card
             title: ''
             subtitle: Mídias
-          - type: custom:mushroom-media-player-card
+          - type: custom:mini-media-player
             entity: media_player.quarto_tv
-            volume_controls:
-              - volume_mute
-              - volume_set
-            show_volume_level: true
-            use_media_info: true
-            icon: mdi:television
+            group: false
+            volume_stateless: false
+            toggle_power: true
+            source: full
             name: TV
-          - type: custom:mushroom-media-player-card
+          - type: custom:mini-media-player
             entity: media_player.fire_tv_quarto
-            volume_controls:
-              - volume_set
-              - volume_mute
-            media_controls: []
-            show_volume_level: true
-            use_media_info: true
+            group: false
             icon: mdi:usb-flash-drive
             name: Fire Stick
-          - type: custom:mushroom-media-player-card
+          - type: custom:mini-media-player
             entity: media_player.echo_quarto
-            volume_controls:
-              - volume_set
-              - volume_mute
-            media_controls: []
-            collapsible_controls: false
-            show_volume_level: true
-            use_media_info: true
-            icon: mdi:speaker
+            icon: phu:echo-dot-gen-4
             name: Echo
           - type: custom:gap-card
             height: 20
@@ -2659,96 +1977,8 @@ views:
     type: custom:vertical-layout
     badges: []
     cards:
-      - type: vertical-stack
-        cards:
-          - square: false
-            columns: 2
-            type: grid
-            cards:
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: back
-                  - type: conditional
-                    conditions:
-                      - entity: group.porta_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.porta_casa') | selectattr('state',
-                        'eq', 'on') | list | count }}
-                      icon: mdi:door-open
-                      icon_color: pink
-                      entity: group.porta_casa
-                      tap_action:
-                        action: more-info
-                  - type: conditional
-                    conditions:
-                      - entity: group.janela_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.janela_casa') | selectattr('state',
-                        'eq', 'on') | list | count }}
-                      icon: mdi:window-open
-                      icon_color: deep-purple
-                      entity: group.janela_casa
-                      tap_action:
-                        action: more-info
-                  - type: conditional
-                    conditions:
-                      - entity: group.luz_casa
-                        state: 'on'
-                    chip:
-                      type: template
-                      content: >-
-                        {{ expand('group.luz_casa') | selectattr('state', 'eq',
-                        'on') | list | count }}
-                      icon: mdi:lightbulb
-                      icon_color: yellow
-                      entity: group.luz_casa
-                      tap_action:
-                        action: more-info
-                      hold_action:
-                        action: toggle
-                alignment: start
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: conditional
-                    conditions:
-                      - entity: binary_sensor.home_assistant_versions_update_available
-                        state_not: 'off'
-                    chip:
-                      type: entity
-                      entity: binary_sensor.home_assistant_versions_update_available
-                      name: HA
-                      content_info: name
-                      icon_color: pink
-                  - type: conditional
-                    conditions:
-                      - entity: sensor.hacs
-                        state_not: '0'
-                    chip:
-                      type: entity
-                      entity: sensor.hacs
-                      icon: mdi:package-up
-                      icon_color: pink
-                      name: HACS
-                      content_info: name
-                  - type: entity
-                    entity: sensor.fire_tablet_battery_level
-                    use_entity_picture: false
-                  - type: action
-                    icon: mdi:cog
-                    tap_action:
-                      action: navigate
-                      navigation_path: /config/dashboard
-                alignment: end
-          - type: custom:gap-card
-            height: 10
-        view_layout:
-          position: main
+      - type: custom:decluttering-card
+        template: secondary_header
       - type: vertical-stack
         cards:
           - type: custom:mushroom-title-card
@@ -2805,17 +2035,9 @@ views:
           - type: custom:mushroom-title-card
             title: ''
             subtitle: Mídias
-          - type: custom:mushroom-media-player-card
+          - type: custom:mini-media-player
             entity: media_player.echo_banheiro
-            volume_controls:
-              - volume_set
-              - volume_buttons
-            media_controls: []
-            collapsible_controls: false
-            show_volume_level: true
-            use_media_artwork: true
-            use_media_info: true
-            icon: mdi:speaker
+            icon: phu:echo-dot-gen-4
             name: Echo
           - type: custom:gap-card
             height: 20
