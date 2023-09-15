@@ -1,11 +1,11 @@
 blueprint:
-  name: ZHA - Tuya 4-Button Switch
-  description: Automate your Tuya 4-Button Switch using ZHA events.
+  name: ZHA - Tuya Knob
+  description: Automate your Tuya Knob using ZHA events.
   domain: automation
   input:
     tuya_4button_switch:
-      name: Tuya 4-Button Switch
-      description: Tuya 4-Button Switch to use
+      name: Tuya Knob
+      description: Tuya Knob to use
       selector:
         device:
           integration: zha
