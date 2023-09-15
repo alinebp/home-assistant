@@ -9,7 +9,7 @@ blueprint:
       selector:
         device:
           integration: zha
-          manufacturer: _TZ3000_xabckq1v
+          manufacturer: _TZ3000_abrsvsou
           model: TS004F
     button_1_click:
       name: Button 1 click
