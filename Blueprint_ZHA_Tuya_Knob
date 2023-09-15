@@ -1,136 +1,160 @@
 blueprint:
-  name: ZHA - Tuya Knob
-  description: Automate your Tuya Knob using ZHA events.
+  name: ZHA - Smart Knob for lights
+  description: 'Control lights with a Moes Smart Knob.
+    You can set functions for a single press. This allows you to assign, e.g., a scene
+    or anything else.
+    Rotating left/right will change the brightness smoothly of the selected light.
+    Not all functionality of the device is available at time of writing, e.g. double
+    press, long press and press and rotate.
+    Original blueprint by seamus65 (https://gist.github.com/seamus65/939a147634942dd885c8704334627f93).
+    Improved by GonzaloAlbito (https://gist.github.com/gonzaloalbito/3dc06702e941e08298ea9bfade731731).
+    Version 2022-11-15.
+    Edited by Gordio'
   domain: automation
   input:
-    tuya_4button_switch:
-      name: Tuya Knob
-      description: Tuya Knob to use
+    remote:
+      name: Remote
+      description: Moes Knob to use
       selector:
         device:
           integration: zha
-          manufacturer: _TZ3000_abrsvsou
           model: TS004F
-    button_1_click:
-      name: Button 1 click
-      description: Action to run on button upper-left single press
+          multiple: false
+    light:
+      name: Light(s)
+      description: The light(s) to control
+      selector:
+        target:
+          entity:
+            domain: light
+    step_percent:
+      name: Light step
+      description: Light pecent change for each knob step
+      selector:
+        number:
+          mode: slider
+          min: 0
+          max: 100
+          unit_of_measurement: "%"
+      default: 20
+    press_light:
+      name: Pressed light(s)
+      description: The light(s) to control when pressed
+      selector:
+        target:
+          entity:
+            domain: light
+    press_step_percent:
+      name: Pressed light step
+      description: Light pecent change for each knob step when pressed
+      selector:
+        number:
+          mode: slider
+          min: 0
+          max: 100
+          unit_of_measurement: "%"
+      default: 5
+    single_press:
+      name: Single press
+      description: Action to run on single press
       default: []
       selector:
         action: {}
-    button_1_double_click:
-      name: Button 1 double-click
-      description: Action to run on button upper-left double press
+    long_press:
+      name: Long press
+      description: Action to run on long press
       default: []
       selector:
         action: {}
-    button_1_long_press:
-      name: Button 1 long press
-      description: Action to run on button upper-left long press
-      default: []
-      selector:
-        action: {}
-    button_2_click:
-      name: Button 2 click
-      description: Action to run on button upper-right single press
-      default: []
-      selector:
-        action: {}
-    button_2_double_click:
-      name: Button 2 double-click
-      description: Action to run on button upper-right double press
-      default: []
-      selector:
-        action: {}
-    button_2_long_press:
-      name: Button 2 long press
-      description: Action to run on button upper-right long press
-      default: []
-      selector:
-        action: {}
-    button_3_click:
-      name: Button 3 click
-      description: Action to run on button lower-left single press
-      default: []
-      selector:
-        action: {}
-    button_3_double_click:
-      name: Button 3 double-click
-      description: Action to run on button lower-right double press
-      default: []
-      selector:
-        action: {}
-    button_3_long_press:
-      name: Button 3 long press
-      description: Action to run on button lower-left long press
-      default: []
-      selector:
-        action: {}
-    button_4_click:
-      name: Button 4 click
-      description: Action to run on button lower-right single press
-      default: []
-      selector:
-        action: {}
-    button_4_double_click:
-      name: Button 4 double-click
-      description: Action to run on button lower-right double press
-      default: []
-      selector:
-        action: {}
-    button_4_long_press:
-      name: Long Press Dim-down
-      description: Action to run on button lower-right long press
-      default: []
-      selector:
-        action: {}
-mode: single
+  source_url: https://gist.github.com/gonzaloalbito/3dc06702e941e08298ea9bfade731731
+mode: restart
 max_exceeded: silent
 trigger:
 - platform: event
   event_type: zha_event
   event_data:
-    device_id: !input 'tuya_4button_switch'
+    device_id: !input remote
 action:
 - variables:
     command: '{{ trigger.event.data.command }}'
+    cluster_id: '{{ trigger.event.data.cluster_id }}'
     endpoint_id: '{{ trigger.event.data.endpoint_id }}'
+    mode: '{% if command != ''toggle'' %} {{ trigger.event.data.args[0] }} {% endif %}'
+    steps: '{% if command != ''toggle'' %} {{ (trigger.event.data.args[1] / 12.5 ) | int }} {% endif %}'
+    step_percent: !input step_percent
+    press_step_percent: !input press_step_percent
 - choose:
-  - conditions: '{{ false }}'
+  - conditions:
+    - '{{ cluster_id == 6 }}'
+    - '{{ endpoint_id == 1 }}'
+    - '{{ command == ''toggle'' }}'
+    sequence: !input single_press
+  - conditions:
+    - '{{ cluster_id == 768 }}'
+    - '{{ endpoint_id == 1 }}'
+    - '{{ command == ''move_hue'' }}'
+    sequence: !input long_press
+  - conditions:
+    - '{{ cluster_id == 8 }}'
+    - '{{ endpoint_id == 1 }}'
+    - '{{ command == ''step'' }}'
+    - '{{ mode == ''StepMode.Up'' }}'
     sequence:
-        - service: notify.persistent_notification
-          data:
-            message: '{{ endpoint_id }}'
-            title: '{{ command }}'
-  - conditions: '{{ command == ''remote_button_short_press'' }}'
+    - repeat:
+        while:
+        - condition: template
+          value_template: '{{ repeat.index < 2 }}'
+        sequence:
+        - service_template: light.turn_on
+          target: !input light
+          data_template:
+            brightness_step_pct: '{{ step_percent * steps }}'
+            transition: 0.5
+  - conditions:
+    - '{{ cluster_id == 8 }}'
+    - '{{ endpoint_id == 1 }}'
+    - '{{ command == ''step'' }}'
+    - '{{ mode == ''StepMode.Down'' }}'
     sequence:
-    - choose:
-      - conditions: '{{ endpoint_id == 1 }}'
-        sequence: !input 'button_1_click'
-      - conditions: '{{ endpoint_id == 2 }}'
-        sequence: !input 'button_2_click'
-      - conditions: '{{ endpoint_id == 3 }}'
-        sequence: !input 'button_3_click'
-      - conditions: '{{ endpoint_id == 4 }}'
-        sequence: !input 'button_4_click'
-  - conditions: '{{ command == ''remote_button_double_press'' }}'
+    - repeat:
+        while:
+        - condition: template
+          value_template: '{{ repeat.index < 2 }}'
+        sequence:
+        - service_template: light.turn_on
+          target: !input light
+          data_template:
+            brightness_step_pct: '-{{ step_percent * steps }}'
+            transition: 0.5
+  - conditions:
+    - '{{ cluster_id == 768 }}'
+    - '{{ endpoint_id == 1 }}'
+    - '{{ command == ''step_color_temp'' }}'
+    - '{{ mode == ''StepMode.Up'' }}'
     sequence:
-    - choose:
-      - conditions: '{{ endpoint_id == 1 }}'
-        sequence: !input 'button_1_double_click'
-      - conditions: '{{ endpoint_id == 2 }}'
-        sequence: !input 'button_2_double_click'
-      - conditions: '{{ endpoint_id == 3 }}'
-        sequence: !input 'button_3_double_click'
-      - conditions: '{{ endpoint_id == 4 }}'
-        sequence: !input 'button_4_double_click'
-  - conditions: '{{ command == ''remote_button_long_press'' }}'
+    - repeat:
+        while:
+        - condition: template
+          value_template: '{{ repeat.index < 2 }}'
+        sequence:
+        - service_template: light.turn_on
+          target: !input press_light
+          data_template:
+            brightness_step_pct: '{{ press_step_percent * steps }}'
+            transition: 0.5
+  - conditions:
+    - '{{ cluster_id == 768 }}'
+    - '{{ endpoint_id == 1 }}'
+    - '{{ command == ''step_color_temp'' }}'
+    - '{{ mode == ''StepMode.Down'' }}'
     sequence:
-    - choose:
-      - conditions: '{{ endpoint_id == 1 }}'
-        sequence: !input 'button_1_long_press'
-      - conditions: '{{ endpoint_id == 2 }}'
-        sequence: !input 'button_2_long_press'
-      - conditions: '{{ endpoint_id == 3 }}'
-        sequence: !input 'button_3_long_press'
-      - conditions: '{{ endpoint_id == 4 }}'
-        sequence: !input 'button_4_long_press'
+    - repeat:
+        while:
+        - condition: template
+          value_template: '{{ repeat.index < 2 }}'
+        sequence:
+        - service_template: light.turn_on
+          target: !input press_light
+          data_template:
+            brightness_step_pct: '-{{ press_step_percent * steps }}'
+            transition: 0.5
